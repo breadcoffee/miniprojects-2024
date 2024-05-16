@@ -23,3 +23,10 @@ IoT 개발자 과정 미니프로젝트
      - UI/UX디자인(https://www.figma.com/), 목업(https://ovenapp.io/)
      - 발표자료(https://prezi.com/ko/), 미리캠퍼스(https://www.miricanvas.com)
 
+## 2일차
+- 미니 프로젝트
+    - 프로젝트 문서
+    - UI/UX 디자인 툴 설명
+    - Notion...
+    - 라즈베리파이 리셋팅, 네트워크 설정, VNC(OS UI작업)
+
