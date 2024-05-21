@@ -81,6 +81,17 @@ IoT 개발자 과정 미니프로젝트
     [x] 라즈베리파이 카메라
     [x] GPIO HAT
     [x] 브레드보드와 연결
-    [x] DHT11 센서
-    [ ] RGB LED 모듈
+    [ ] DHT11 센서
+    [x] RGB LED 모듈
+        - V : 5V 연결
+        - R : GPIO 4번 연결
+        - B : GPIO 5번 연결
+        - G : GPIO 6번 연결
     [-] 서브모터
+
+## 5일차
+- 라즈베리파이 IoT장비 설치
+    [x] DHT11 센서
+        - GND : GND에 연결
+        - VCC : 5V에 연결
+        - S : GPIO 18번 연결
