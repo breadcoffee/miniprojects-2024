@@ -53,6 +53,7 @@
                     <MenuItem.Icon>
                         <iconPacks:PackIconJamIcons Kind="ScreenF"/>
                     </MenuItem.Icon>
+                    
                     <MenuItem x:Name="MnuDataBaseMon" Header="DB모니터링" Click="MnuDataBaseMon_Click">
                         <MenuItem.Icon>
                             <iconPacks:PackIconOcticons Kind="Database"/>
@@ -61,6 +62,12 @@
                     <MenuItem x:Name="MnuRealTimeMon" Header="실시간 모니터링" Click="MnuRealTimeMon_Click">
                         <MenuItem.Icon>
                             <iconPacks:PackIconMaterial Kind="Gauge"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem x:Name="MnuVisualizationMon" Header="시각화모니터링"
+                              Click="MnuVisualizationMon_Click">
+                        <MenuItem.Icon>
+                            <iconPacks:PackIconMaterial Kind="ChartMultiline"/>
                         </MenuItem.Icon>
                     </MenuItem>
                 </MenuItem>
