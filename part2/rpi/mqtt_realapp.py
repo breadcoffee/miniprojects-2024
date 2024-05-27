@@ -56,12 +56,12 @@ while True:
         # 온습도 값을 받아서 MQTT로 전송
         temp = dhtDevice.temperature
         humid = dhtDevice.humidity
-        print(f'{loop_num} - Temp : {temp}℃ / Humid : {humid}%')
+        #print(f'{loop_num} - Temp : {temp}℃ / Humid : {humid}%')
 
         origin_data = { 'DEV_ID' : dev_id,
                         'CURR_DT' : dt.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-                        'TYPE' : 'TEMP:HUMID',
-                        'VALUE' : f'{temp}℃ / {humid}%'
+                        'TYPE' : 'TEMPHUMID',
+                        'VALUE' : f'{temp}|{humid}'
                         } # dictionary data
         pub_data = json.dumps(origin_data, ensure_ascii=False)
 
