@@ -1,4 +1,7 @@
-﻿using LiveChartsCore.SkiaSharpView.Extensions;
+﻿using LiveChartsCore.SkiaSharpView.Drawing;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView.Extensions;
+using LiveChartsCore.VisualElements;
 using MahApps.Metro.Controls;
 using MQTTnet;
 using MQTTnet.Client;
@@ -21,6 +24,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using LiveChartsCore.SkiaSharpView.VisualElements;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.SkiaSharpView;
 
 namespace SmartHomeMonitoringApp.Views
 {
@@ -76,8 +82,18 @@ namespace SmartHomeMonitoringApp.Views
             return Task.CompletedTask;
         }
 
+        // 앵귤러 차트를 위한 변수, 속성 선언
+        public IEnumerable<ISeries> HumidSeries { get; set; }
+        public IEnumerable<VisualElement<SkiaSharpDrawingContext>> VisualElements { get; set; }
+        public NeedleVisual Needle { get; set; }
+        private static void SetStyle(double sectionsOuter, double sectionsWidth, PieSeries<ObservableValue> series)
+        {
+            series.OuterRadiusOffset = sectionsOuter;
+            series.MaxRadialColumnWidth = sectionsWidth;
+        }
         private void UpdateChart(string payload)
         {
+            // 차트에 값 대입해서 차트가 나오도록
             this.Invoke(() =>
             {
                 var currValue = JsonConvert.DeserializeObject<Dictionary<string, string>>(payload);
@@ -86,6 +102,7 @@ namespace SmartHomeMonitoringApp.Views
                 var temp = Convert.ToDouble(splitValue[0]);
                 var humid = Convert.ToDouble(splitValue[1]);
 
+                // 온도차트 값
                 var tempVal = GaugeGenerator.BuildSolidGauge(new GaugeItem(
                     temp,
                     series =>
@@ -93,8 +110,49 @@ namespace SmartHomeMonitoringApp.Views
                         series.MaxRadialColumnWidth = 50;
                         series.DataLabelsSize = 50;
                     }));
-                chtDinningTemp.Series = tempVal;
+                chtLivingTemp.Series = chtDiningTemp.Series = chtBedTemp.Series = chtBathTemp.Series = tempVal;
+
+                var sectionsOuter = 100;
+                var sectionsWidth = 20;
+
+            // 습도차트 값 할당
+                HumidSeries = GaugeGenerator.BuildAngularGaugeSections(
+                    new GaugeItem(humid,
+                    s => SetStyle(sectionsOuter, sectionsWidth, s))
+                );
+                chtLivingHumid.Series = chtDiningHumid.Series = chtBedHumid.Series = chtBathHumid.Series = HumidSeries;
+                // 습도를 나타낼 앵귤러 차트를 초기화
+                Needle = new NeedleVisual { Value = humid };
+                VisualElements = new VisualElement<SkiaSharpDrawingContext>[]
+                {
+                    new AngularTicksVisual
+                    {
+                        LabelsSize = 14,
+                        LabelsOuterOffset = 15,
+                        OuterOffset = 65,
+                        TicksLength = 20
+                    },
+                    Needle
+                };
+
+                chtLivingHumid.VisualElements = chtDiningHumid.VisualElements = chtBedHumid.VisualElements = chtBathHumid.VisualElements = VisualElements; // 위에서 만든 화면디자인을 차트에 적용
             });
+
+        }
+
+        private void BtnWarning_Click(object sender, RoutedEventArgs e)
+        {
+            Commons.MQTT_CLIENT.PublishStringAsync("pknu/rcv/", "{'control':'warning'}");
+        }
+
+        private void BtnNomal_Click(object sender, RoutedEventArgs e)
+        {
+            Commons.MQTT_CLIENT.PublishStringAsync("pknu/rcv/", "{'control':'nomal'}");
+        }
+
+        private void BtnOff_Click(object sender, RoutedEventArgs e)
+        {
+            Commons.MQTT_CLIENT.PublishStringAsync("pknu/rcv/", "{'control':'off'}");
         }
     }
 }
