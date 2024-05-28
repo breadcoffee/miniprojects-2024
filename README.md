@@ -142,9 +142,7 @@ IoT 개발자 과정 미니프로젝트
 
     -실행결과
         ![스마트홈1](https://raw.githubusercontent.com/breadcoffee/miniprojects-2024/main/images/mp002.png)
-
         ![스마트홈2](https://raw.githubusercontent.com/breadcoffee/miniprojects-2024/main/images/mp003.png)
-
         ![스마트홈3](https://raw.githubusercontent.com/breadcoffee/miniprojects-2024/main/images/mp004.png)
 
 - 조별 미니프로젝트 발표
