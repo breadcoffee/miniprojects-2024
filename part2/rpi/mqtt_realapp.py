@@ -18,13 +18,33 @@ dev_id = "PKNU70"
 loop_num = 0
 
 ## 초기화 시작
-
 def onConnect(client, userdata, flags, reason_code, properties):
     print(f'Connected result code : {reason_code}')
-    client.subscribe('pknu/rcv')
+    client.subscribe('pknu/rcv/')
+    # RGB LED off
+    GPIO.output(red_pin, GPIO.HIGH)
+    GPIO.output(blue_pin, GPIO.HIGH)
+    GPIO.output(green_pin, GPIO.HIGH)
 
 def onMessage(client, userdata, msg):
-    print(f'{msg.topic} +{msg.payload}')
+    #print(f'{msg.topic} +{msg.payload}')
+    # byte cond -> string
+    # json ' -> " 
+    value = json.loads(msg.payload.decode('utf-8').replace("'", '"'))
+    res = value['control']
+    # LED 컨트롤
+    if(res == 'warning'):
+        GPIO.output(red_pin, GPIO.LOW)
+        GPIO.output(blue_pin, GPIO.HIGH)
+        GPIO.output(green_pin, GPIO.HIGH)
+    elif(res == 'nomal'):
+        GPIO.output(red_pin, GPIO.HIGH)
+        GPIO.output(blue_pin, GPIO.HIGH)
+        GPIO.output(green_pin, GPIO.LOW)
+    elif(res == 'off'):
+        GPIO.output(red_pin, GPIO.HIGH)
+        GPIO.output(blue_pin, GPIO.HIGH)
+        GPIO.output(green_pin, GPIO.HIGH)
 
 GPIO.cleanup()
 GPIO.setmode(GPIO.BCM) # GPIO.Board 도 있음
